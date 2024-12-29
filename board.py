@@ -1,11 +1,13 @@
 import pygame
 import random
 
+import colors
 import squads
 from events import *
-from init import Squads
+import squads as sq
 from screen import *
 from colors import *
+from square import Square
 
 ### board config
 grid_size = 10
@@ -13,80 +15,89 @@ square_size = 70
 nb_squares = 100
 pygame.font.init()
 
-def generate_spiral():
-    spiral = [[-1] * grid_size for _ in range(grid_size)]
-    x, y = 0, 0
-    dx, dy = 0, 1
-    for i in range(grid_size * grid_size):
-        spiral[x][y] = i
-        if (
-                0 <= x + dx < grid_size
-                and 0 <= y + dy < grid_size
-                and spiral[x + dx][y + dy] == -1
-        ):
-            x += dx
-            y += dy
-        else:
-            dx, dy = dy, -dx
-            x += dx
-            y += dy
-    return spiral
+grid = []
 
-spiral = generate_spiral()
-spiral_indices = [spiral[x][y] for x in range(grid_size) for y in range(grid_size) if spiral[x][y] != -1]
+ind_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+            36, 37, 38, 39, 40, 41, 42, 43, 44, 11,
+            35, 64, 65, 66, 67, 68, 69, 70, 45, 12,
+            34, 63, 84, 85, 86, 87, 88, 71, 46, 13,
+            33, 62, 83, 96, 97, 98, 89, 72, 47, 14,
+            32, 61, 82, 95, 100, 99, 90, 73, 48, 15,
+            31, 60, 81, 94, 93, 92, 91, 74, 49, 16,
+            30, 59, 80, 79, 78, 77, 76, 75, 50, 17,
+            29, 58, 57, 56, 55, 54, 53, 52, 51, 18,
+            28, 27, 26, 25, 24, 23, 22, 21, 20, 19]
+
+def create_grid():
+    rect_x = 80
+    k = 0
+    for i in range(10):
+
+        rect_y = 50
+        for j in range(10):
+            grid.append(Square(rect_x, rect_y, ind_list[k]))
+            k += 1
+            rect_y += 70
+        rect_x += 70
+
+
+def find_square(ind):
+    for square in grid:
+        if square.ind == ind:
+            return square
+    return None
+
+Squads = {}
+def create_squads():
+    nb_squads = 4
+    for i in range(nb_squads):
+        Squads["S" + str(i + 1)] = sq.Squad("Equipo " + str(i + 1), i)
+
+
 def draw_board():
     # squares
-    for idx, index in enumerate(spiral_indices):
+    for square in grid:
+        square.draw()
 
-        square_event = get_event(spiral_indices[index])
-        color = event_colors[square_event]
-        symbol = event_symbols[square_event]
+    # squads
+    draw_squads()
 
-        x, y = index // grid_size, index % grid_size
-        rect_x = x * square_size + 80
-        rect_y = y * square_size + 50
-        pygame.draw.rect(screen, color=color, rect=(rect_x, rect_y, square_size, square_size))
-        pygame.draw.rect(screen, color=BLACK, rect=(rect_x, rect_y, square_size, square_size), width=1)
-
-        font = pygame.font.SysFont(None, 20)
-        number_text = font.render(str(spiral_indices[index] + 1), True, BLACK)
-        screen.blit(number_text, (rect_x + 5, rect_y + 5))
-
-        symbol_text = font.render(symbol, True, BLACK)
-        text_x = rect_x + square_size // 2 - 10
-        text_y = rect_y + square_size // 2 - 10
-        #screen.blit(symbol_text, (text_x, text_y))
 
     # lines
-    pygame.draw.line(screen, SOFT_BLUE, (320-170, 50), (320-170, 680), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (320-170, 680), (880-170, 680), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (880-170, 680), (880-170, 120), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (880-170, 120), (390-170, 120), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (390-170, 120), (390-170, 610), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (390-170, 610), (810-170, 610), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (810-170, 610), (810-170, 190), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (810-170, 190), (460-170, 190), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (460-170, 190), (460-170, 540), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (460-170, 540), (740-170, 540), width=5)
+    pygame.draw.line(screen, BLACK, (320-170, 50), (320-170, 680), width=5)
+    pygame.draw.line(screen, BLACK, (320-170, 680), (880-170, 680), width=5)
+    pygame.draw.line(screen, BLACK, (880-170, 680), (880-170, 120), width=5)
+    pygame.draw.line(screen, BLACK, (880-170, 120), (390-170, 120), width=5)
+    pygame.draw.line(screen, BLACK, (390-170, 120), (390-170, 610), width=5)
+    pygame.draw.line(screen, BLACK, (390-170, 610), (810-170, 610), width=5)
+    pygame.draw.line(screen, BLACK, (810-170, 610), (810-170, 190), width=5)
+    pygame.draw.line(screen, BLACK, (810-170, 190), (460-170, 190), width=5)
+    pygame.draw.line(screen, BLACK, (460-170, 190), (460-170, 540), width=5)
+    pygame.draw.line(screen, BLACK, (460-170, 540), (740-170, 540), width=5)
 
-    pygame.draw.line(screen, SOFT_BLUE, (740-170, 540), (740-170, 260), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (740-170, 260), (530-170, 260), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (530-170, 260), (530-170, 470), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (530-170, 470), (670-170, 470), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (670-170, 470), (670-170, 330), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (670-170, 330), (600-170, 330), width=5)
-    pygame.draw.line(screen, SOFT_BLUE, (600-170, 330), (600-170, 400), width=5)
+    pygame.draw.line(screen, BLACK, (740-170, 540), (740-170, 260), width=5)
+    pygame.draw.line(screen, BLACK, (740-170, 260), (530-170, 260), width=5)
+    pygame.draw.line(screen, BLACK, (530-170, 260), (530-170, 470), width=5)
+    pygame.draw.line(screen, BLACK, (530-170, 470), (670-170, 470), width=5)
+    pygame.draw.line(screen, BLACK, (670-170, 470), (670-170, 330), width=5)
+    pygame.draw.line(screen, BLACK, (670-170, 330), (600-170, 330), width=5)
+    pygame.draw.line(screen, BLACK, (600-170, 330), (600-170, 400), width=5)
 
 
 def draw_squads():
     for s in Squads:
         squad = Squads[s]
-        x, y = spiral_indices[squad.square - 1] // 10, spiral_indices[squad.square - 1] % 10
-        c_x = x * square_size + squad.x
-        c_y = y * square_size + squad.y
-        pygame.draw.circle(screen, BLACK, center=(c_x, c_y), radius=10)
-        pygame.draw.circle(screen, squad.color, center = (c_x, c_y), radius= 8)
+        squad.draw()
 
 
+def print_text(str):
+    font = pygame.font.SysFont(None, 25)
+    text = font.render(str, True, colors.WHITE)
+    screen.blit(text, (800, 50))
+    pygame.display.flip()
 
-
+def print_subtext(str):
+    font = pygame.font.SysFont(None, 25)
+    text = font.render(str, True, colors.WHITE)
+    screen.blit(text, (800, 70))
+    pygame.display.flip()
