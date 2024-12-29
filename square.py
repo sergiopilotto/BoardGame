@@ -3,6 +3,7 @@ import pygame
 from colors import PASTEL_YELLOW, BLACK
 from screen import screen
 from events import *
+import cards as card
 
 class Square:
     def __init__(self, x, y, ind):
@@ -11,6 +12,7 @@ class Square:
         self.size = 70
         self.ind = ind
         self.event = get_event(ind-1)
+        self.card = card.Card(str(ind))
 
 
     def draw(self):
@@ -19,6 +21,7 @@ class Square:
         font = pygame.font.SysFont(None, 20)
         number_text = font.render(str(self.ind), True, BLACK)
         screen.blit(number_text, (self.x + 5, self.y + 5))
+
 
 
 

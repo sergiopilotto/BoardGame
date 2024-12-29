@@ -8,6 +8,7 @@ import squads as sq
 from screen import *
 from colors import *
 from square import Square
+import cards as crd
 
 ### board config
 grid_size = 10
@@ -15,8 +16,9 @@ square_size = 70
 nb_squares = 100
 pygame.font.init()
 
-grid = []
+########### CREATION #########
 
+grid = []
 ind_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             36, 37, 38, 39, 40, 41, 42, 43, 44, 11,
             35, 64, 65, 66, 67, 68, 69, 70, 45, 12,
@@ -48,11 +50,13 @@ def find_square(ind):
     return None
 
 Squads = {}
+nb_squads = 4
 def create_squads():
-    nb_squads = 4
     for i in range(nb_squads):
         Squads["S" + str(i + 1)] = sq.Squad("Equipo " + str(i + 1), i)
 
+
+############### DRAWING ######################
 
 def draw_board():
     # squares
@@ -60,7 +64,11 @@ def draw_board():
         square.draw()
 
     # squads
-    draw_squads()
+    #draw_squads()
+    #draw_cards()
+
+    #pygame.draw.rect(screen, colors.WHITE, rect=(800, 400, 250, 300), width=2)
+    #print_cardtext(['Cartas :D'])
 
 
     # lines
@@ -90,7 +98,10 @@ def draw_squads():
         squad.draw()
 
 
+################# PRINTING ###############
+
 def print_text(str):
+    pygame.draw.rect(screen, color=colors.BLACK, rect=(800, 50, 500, 100))
     font = pygame.font.SysFont(None, 25)
     text = font.render(str, True, colors.WHITE)
     screen.blit(text, (800, 50))
@@ -101,3 +112,13 @@ def print_subtext(str):
     text = font.render(str, True, colors.WHITE)
     screen.blit(text, (800, 70))
     pygame.display.flip()
+
+def print_cardtext(list):
+    y = 10
+    for str in list:
+        font = pygame.font.SysFont(None, 20)
+        text = font.render(str, True, colors.WHITE)
+        screen.blit(text, (810, 400+y))
+        y+=10
+        #pygame.display.flip()
+

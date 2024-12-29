@@ -38,25 +38,22 @@ class Squad:
             self.six = []
         return dice
 
-    def get_card(self):
-        events.get_event(self.square)
-        crd.select_card(self.square)
+    def card(self):
+        self.square.card.draw()
 
     def move(self, ind):
-
-
-
         if self.check_throws():
             self.square = bd.grid[0]
 
         elif self.ind + ind > 100:
-            self.ind = 100
+            self.ind = 100 - (self.ind + ind - 100)
             self.square = bd.find_square(self.ind)
         else:
             self.ind += ind
             self.square = bd.find_square(self.ind)
         self.x = self.square.x + self.get_x()
         self.y = self.square.y + self.get_y()
+
 
     def draw(self):
         pygame.draw.circle(screen, color=color.BLACK, center=(self.x, self.y), radius=10)
@@ -69,9 +66,7 @@ class Squad:
         number_text = font.render(str(dice), True, color.BLACK)
         screen.blit(number_text, (990, 180))
         pygame.display.update()
-        time.sleep(1)
         self.move(dice)
-        #self.get_card()
 
     def check_throws(self):
         if len(self.six) == 3:
