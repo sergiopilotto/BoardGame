@@ -21,8 +21,16 @@ class Square:
         font = pygame.font.SysFont(None, 20)
         number_text = font.render(str(self.ind), True, BLACK)
         screen.blit(number_text, (self.x + 5, self.y + 5))
+        image = select_image(self.ind-1)
+
+        if image is not None:
+            screen.blit(image, (self.x + 15, self.y + 20))
 
 
-
+def select_image(ind):
+    if ind in dict_image.keys():
+        image = pygame.image.load(dict_image[ind]).convert_alpha()
+        return pygame.transform.scale(image, (40, 40))
+    return None
 
 
