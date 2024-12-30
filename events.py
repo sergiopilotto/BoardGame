@@ -12,11 +12,8 @@ event_colors = {"Reto": PASTEL_YELLOW, "Castigo": PASTEL_RED, "Recompensa": PAST
 event_symbols = {"Reto": "?", "Castigo": "X", "Recompensa": "$", "Premio": "W"}
 
 
+ind_oca = [3, 8, 19, 28, 35, 44, 59, 64]
 ind_recompensa = [3, 8, 13, 15, 19, 24, 28, 35, 39, 44, 49, 59, 64, 71, 75, 82, 87]
-image_recompensa = [3, 8, 13, 15, 19, 24, 28, 35, 39, 44, 49, 59, 64, 71, 75, 82, 87]
-
-
-
 ind_castigo = [9, 29, 39, 53, 61, 73, 77, 83, 86, 88, 95]
 dict_image = {3:"icons/goose.png",
               6:"icons/alex.jpg",
