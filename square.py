@@ -12,7 +12,7 @@ class Square:
         self.size = 70
         self.ind = ind
         self.event = get_event(ind-1)
-        self.card = card.select_card(ind)
+        #self.card = card.select_card(ind)
 
 
     def draw(self):

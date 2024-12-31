@@ -4,7 +4,8 @@ import pygame
 import random
 import board as bd
 import colors as color
-import events
+import events as events
+import cards as crd
 from board import nb_squads
 from screen import *
 import squads as sq
@@ -60,11 +61,10 @@ def do_turn_1():
 
 def do_turn(id_squad):
     squad = bd.Squads["S"+str(id_squad)]
-    bd.print_text("Es el turno del equipo " + to_color(squad_turn))
-
+    bd.print_text("Es el turno del equipo " + to_color(id_squad))
+    time.sleep(0.5)
     if squad.check_block():
-        bd.print_text("Adonde vais, traviesos???")
-        bd.print_text("Un traguito os hará esto más ameno jeje")
+        bd.print_subtext("Todavía os queda esperar... Bebed mientras ;)")
         time.sleep(2)
         if id_squad != bd.nb_squads:
             id_squad += 1
@@ -94,6 +94,8 @@ def do_turn(id_squad):
 
 
 ##### RUN GAME #######
+
+
 game=True
 while running:
 
@@ -101,13 +103,14 @@ while running:
     while game:
         bd.draw_board()
         bd.draw_squads()
-        bd.print_text("Es el turno del equipo " + to_color(squad_turn))
+        #bd.print_text("Es el turno del equipo " + to_color(squad_turn))
         pygame.event.set_blocked(pygame.MOUSEMOTION)
         pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN])
         event = pygame.event.wait()
 
         if event.type == pygame.QUIT:
             running = False
+            game = False
 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
@@ -116,6 +119,8 @@ while running:
                     do_turn_1()
                 else:
                     squad_turn = do_turn(squad_turn)
+            if event.key == pygame.K_RETURN:
+                crd.select_card(1).draw()
 
         pygame.display.flip()
 

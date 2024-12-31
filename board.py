@@ -18,6 +18,8 @@ pygame.font.init()
 
 ########### CREATION #########
 
+
+
 grid = []
 ind_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             36, 37, 38, 39, 40, 41, 42, 43, 44, 11,
@@ -50,7 +52,7 @@ def find_square(ind):
     return None
 
 Squads = {}
-nb_squads = 1
+nb_squads = 4
 def create_squads():
     for i in range(nb_squads):
         Squads["S" + str(i + 1)] = sq.Squad("Equipo " + str(i + 1), i)
@@ -104,7 +106,7 @@ def print_subtext(str):
     screen.blit(text, (800, 70))
     pygame.display.flip()
 
-def print_cardtext(list):
+def print_speccardtext(list):
     y = 20
     for str in list:
         if y == 20:
@@ -119,3 +121,10 @@ def print_cardtext(list):
             y+=20
         #pygame.display.flip()
 
+def print_cardtext(list):
+    y = 20
+    for str in list:
+        font = pygame.font.SysFont(None, 25)
+        text = font.render(str, True, colors.WHITE)
+        screen.blit(text, (810, 410 + y))
+        y += 20
